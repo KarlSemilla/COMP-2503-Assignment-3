@@ -1,12 +1,12 @@
 
-public class Stack <T extends Comparable<T>> extends SLL<T>
+public class Queue <T extends Comparable<T>> extends SLL<T>
 {
-    public void push(T data)
+    public void enqueue(T data)
     {
-        addHead(data);
+    		addTail(data);
     }
 
-    public T pop()
+    public T dequeue()
     {
         return deleteHead();
     }
@@ -25,7 +25,7 @@ public class Stack <T extends Comparable<T>> extends SLL<T>
     {
     		while (!isEmpty()) 
     		{
-    			pop();
+    			dequeue();
     		}
     }
 }
