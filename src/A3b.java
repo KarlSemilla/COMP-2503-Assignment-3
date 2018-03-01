@@ -15,12 +15,10 @@ public class A3b {
 	
 	public void readFile() {
 		Scanner in = new Scanner(System.in);
-		System.out.print("Enter two numbers separated by a space: ");
 		while(in.hasNext()) {
 			s1.push(in.nextInt());
 			s2.push(in.nextInt());
 			print(calcNum());
-			System.out.print("Enter two numbers separated by a space: ");
 		}
 		in.close();
 	}

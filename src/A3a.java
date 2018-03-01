@@ -31,19 +31,22 @@ public class A3a {
 		in.close();
 	}
 	
-	public void addToStack(String input) {
+	public void addToStack(String input) 
+	{
 		for(int i = 0; i != input.length(); i++) {
 			s1.push(input.charAt(i));
 		}
 	}
 	
-	public void reverseStack(String input) {
+	public void reverseStack(String input)
+	{
 		for(int i = 0; i < input.length(); i++) {
 			s2.push(s1.pop());
 		}
 	}
 	
-	public boolean isPall() {
+	public boolean isPall() 
+	{
 		boolean result = false;
 		while(!s1.isEmpty()) {
 			if (s1.pop() == s2.pop()) {
