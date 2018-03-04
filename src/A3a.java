@@ -1,69 +1,76 @@
-import java.util.Scanner;
+import java.io.*;
 
 public class A3a {
 	private Stack<Character> s1 = new Stack<Character>();
 	private Stack<Character> s2 = new Stack<Character>();	
-	public static void main (String args[]) 
+	String word;
+	
+	public static void main (String args[]) throws IOException
 	{
 		A3a a3 = new A3a();
 		a3.run();
 	}
 	
-	public void run() 
+	public void run() throws IOException
 	{
 		readFile();
 	}
 	
-	public void readFile() 
+	public void readFile() throws IOException
 	{
-		Scanner in = new Scanner(System.in);
-		String entry;
+		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+		Stack<Character> tmp = new Stack<Character>();
+		char ent;
+		int val;
 		System.out.print("Enter a string of characters: ");
-		while (in.hasNext()) {
-			entry = in.next();
-			addToStack(entry);
-			reverseStack(entry);
-			addToStack(entry);
-			print(entry);
-			s1.empty();
-			s2.empty();
+		while ((val = in.read()) != -1) {
+			ent = (char) val;
+			if(!Character.isWhitespace(ent)){
+				s1.push(ent);
+				tmp.push(ent);
+			}
+			else 
+				in.skip(1);
 		}
+		reverseStack(tmp);
+		print(isPall());
 		in.close();
 	}
 	
-	public void addToStack(String input) 
-	{
-		for(int i = 0; i != input.length(); i++) {
-			s1.push(input.charAt(i));
+	public void reverseStack(Stack<Character> tmp) {
+		int size = s1.size();
+		for(int i = 0; i < size; i++) {
+			s2.push(tmp.pop());
 		}
 	}
 	
-	public void reverseStack(String input)
-	{
-		for(int i = 0; i < input.length(); i++) {
-			s2.push(s1.pop());
-		}
-	}
-	
-	public boolean isPall() 
-	{
+	public boolean isPall() {
 		boolean result = false;
-		while(!s1.isEmpty()) {
-			if (s1.pop() == s2.pop()) {
+		boolean exit = false;
+		while(!s1.isEmpty() && exit != true) {
+			if (s1.peek() == s2.peek()) {
 				result = true;
+				s2.pop();
 			}
-			else
+			else {
 				result = false;
+				exit = true;
+			}
 		}
 		return result;
 	}
 	
-	public void print(String word) {
-		if(isPall()) {
-			word += " : Yes";
+	public void print(boolean result) {
+		if(!s1.isEmpty()) {
+			word += s1.pop();
 		}
-		else
+		else if(s1.isEmpty() && result == true) {
+			word += " : Yes";
+			System.out.println(word);
+		}
+		else if(s1.isEmpty() && result == false) {
 			word += " : No";
-		System.out.println(word);
+			System.out.println(word);
+		}
 	}
 }
