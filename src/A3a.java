@@ -1,9 +1,11 @@
+/* Karl Semilla
+ * COMP 2503 - Assignment 3
+ */
 import java.io.*;
 
 public class A3a {
-	private Stack<Character> s1 = new Stack<Character>();
-	private Stack<Character> s2 = new Stack<Character>();	
-	String word;
+	private Stack<Character> s1 = new Stack<Character>();//Reversed word stack
+	private Stack<Character> s2 = new Stack<Character>();	//Original word stack.
 	
 	public static void main (String args[]) throws IOException
 	{
@@ -14,63 +16,73 @@ public class A3a {
 	public void run() throws IOException
 	{
 		readFile();
+		print(isPall());
 	}
-	
+	/* This method reads the file character by character, while pushing them to stack 1.
+	 * If there is a white space, line-break or carriage-return, it will call the reverseStack method.
+	 */
 	public void readFile() throws IOException
 	{
 		BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-		Stack<Character> tmp = new Stack<Character>();
-		char ent;
-		int val;
-		System.out.print("Enter a string of characters: ");
-		while ((val = in.read()) != -1) {
-			ent = (char) val;
-			if(!Character.isWhitespace(ent)){
-				s1.push(ent);
-				tmp.push(ent);
+		Stack<Character> tmp = new Stack<Character>();//Temporary stack to reverse.
+		char curr; //Current character
+		int val; //Current value in integer form.
+		while ((val = in.read()) != -1) { 
+			curr = (char) val; //Casts integer to char.
+			if(!Character.isWhitespace(curr)){
+				s1.push(curr);
+				tmp.push(curr);
 			}
-			else 
+			else if(val == 10 || val == 13) {
+				reverseStack(tmp);
+				print(isPall());
+			}
+			else
 				in.skip(1);
 		}
+		
 		reverseStack(tmp);
-		print(isPall());
 		in.close();
 	}
 	
+	/* Reverses the temporary stack by pushing all contents to the stack 2.
+	 */
 	public void reverseStack(Stack<Character> tmp) {
-		int size = s1.size();
-		for(int i = 0; i < size; i++) {
+		while(tmp.peek() != null){
 			s2.push(tmp.pop());
 		}
 	}
 	
+	/* Returns a boolean result depending on if top of the stacks are equal.
+	 * Repeats until both stacks are empty.
+	 */
 	public boolean isPall() {
-		boolean result = false;
-		boolean exit = false;
-		while(!s1.isEmpty() && exit != true) {
-			if (s1.peek() == s2.peek()) {
-				result = true;
-				s2.pop();
+		boolean check = true;
+			while (!s1.isEmpty()) {
+			if (s1.peek() == s2.peek() && s2.peek() == s1.peek()) {
+				System.out.print(s2.pop());
 			}
 			else {
-				result = false;
-				exit = true;
+				System.out.print(s2.pop());
+				check = false;
 			}
+			s1.pop();
 		}
-		return result;
+		return check;
 	}
 	
+	/* Prints the yes or no to the end of the word depending on result of
+	 * the isPall method.
+	 */
 	public void print(boolean result) {
-		if(!s1.isEmpty()) {
-			word += s1.pop();
+		String word = "";
+		if(result == true) {
+			word = " : Yes";
 		}
-		else if(s1.isEmpty() && result == true) {
-			word += " : Yes";
-			System.out.println(word);
+		else if(result == false) {
+			word = " : No";
 		}
-		else if(s1.isEmpty() && result == false) {
-			word += " : No";
-			System.out.println(word);
-		}
+		System.out.print(word);
+		System.out.println();
 	}
 }

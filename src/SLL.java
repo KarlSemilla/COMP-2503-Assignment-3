@@ -88,6 +88,18 @@ public class SLL<T extends Comparable<T>>
       else 
          return n.getData(); 
    }
+   
+   /** Delete the element at the head of the list. 
+    *  @return the deleted element. 
+    */
+   public T deleteTail() 
+   {
+      Node<T> n = delTail();
+      if ( n == null) 
+         return null;
+      else 
+         return n.getData(); 
+   }
 
    /** Return the ith element of the list.
     *  @param i the element to return
@@ -156,6 +168,22 @@ public class SLL<T extends Comparable<T>>
          if ( head == tail) 
             tail = head.getNext();
          head = head.getNext();
+         size--;
+      }
+      return n;
+   }
+   
+   /* Delete the node at the head of the list and return a pointer to it. 
+    */
+   private Node<T> delTail() 
+   {
+      Node<T> n = null;
+      if ( head != null) 
+      {
+         n = head;
+         if ( tail == head) 
+            head = tail.getNext();
+         head = tail.getNext();
          size--;
       }
       return n;
